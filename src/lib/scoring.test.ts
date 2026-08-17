@@ -249,6 +249,43 @@ describe('computeResults', () => {
     expect(computeResults(ds, respond({ q1: 'a' })).insufficientData).toBe(true);
   });
 
+  it('gives tied parties the same rank instead of an arbitrary order', () => {
+    // p1 and p2 hold identical positions, so a user agreeing with both must
+    // not be told one of them is "closest" — that would dress the alphabetical
+    // tie-break up as a real difference.
+    const ds = makeDataset(
+      [
+        makeQuestion('q1', ['a', 'b'], { p1: 'a', p2: 'a', p3: 'b' }),
+        makeQuestion('q2', ['a', 'b'], { p1: 'a', p2: 'a', p3: 'b' }),
+        makeQuestion('q3', ['a', 'b'], { p1: 'a', p2: 'a', p3: 'b' }),
+      ],
+      ['p1', 'p2', 'p3'],
+    );
+    const results = computeResults(ds, respond({ q1: 'a', q2: 'a', q3: 'a' }));
+    const byId = Object.fromEntries(results.ranking.map((r) => [r.partyId, r]));
+
+    expect(byId.p1.rank).toBe(1);
+    expect(byId.p2.rank).toBe(1);
+    expect(byId.p1.tied).toBe(true);
+    expect(byId.p2.tied).toBe(true);
+  });
+
+  it('skips ranks after a tie rather than renumbering', () => {
+    const ds = makeDataset(
+      [
+        makeQuestion('q1', ['a', 'b'], { p1: 'a', p2: 'a', p3: 'b' }),
+        makeQuestion('q2', ['a', 'b'], { p1: 'a', p2: 'a', p3: 'b' }),
+        makeQuestion('q3', ['a', 'b'], { p1: 'a', p2: 'a', p3: 'b' }),
+      ],
+      ['p1', 'p2', 'p3'],
+    );
+    const results = computeResults(ds, respond({ q1: 'a', q2: 'a', q3: 'a' }));
+    const byId = Object.fromEntries(results.ranking.map((r) => [r.partyId, r]));
+    // Two parties share rank 1, so the next distinct score is rank 3.
+    expect(byId.p3.rank).toBe(3);
+    expect(byId.p3.tied).toBe(false);
+  });
+
   it('is deterministic when scores tie', () => {
     const ds = makeDataset([makeQuestion('q1', ['a', 'b'], { p1: 'a', p2: 'a' })], ['p1', 'p2']);
     const a = computeResults(ds, respond({ q1: 'a' })).ranking.map((r) => r.partyId);

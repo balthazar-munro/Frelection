@@ -58,6 +58,15 @@ export interface QuestionBreakdown {
 
 export interface PartyResult {
   partyId: string;
+  /**
+   * 1-based competition rank. Parties with the same score share a rank, so a
+   * three-way tie is three parties at rank 1 followed by rank 4. Presenting a
+   * tie as an ordered list would dress up the alphabetical tie-break as a real
+   * difference in alignment.
+   */
+  rank: number;
+  /** True when at least one other party shares this rank. */
+  tied: boolean;
   /** 0-1. Weighted agreement over questions where the party has a position. */
   score: number;
   /** Same as `score`, rounded to a whole percentage for display. */
@@ -190,6 +199,8 @@ export function computeResults(dataset: Dataset, responses: UserResponses): Resu
 
     return {
       partyId: party.id,
+      rank: 0, // assigned after sorting
+      tied: false,
       score,
       percentage: Math.round(score * 100),
       coverage: answeredScorable > 0 ? answeredWithPosition / answeredScorable : 0,
@@ -205,6 +216,19 @@ export function computeResults(dataset: Dataset, responses: UserResponses): Resu
     if (b.coverage !== a.coverage) return b.coverage - a.coverage;
     return a.partyId.localeCompare(b.partyId);
   });
+
+  // Competition ranking: equal scores share a rank, and the next distinct
+  // score skips ahead. Scores are floats, so compare with a tolerance.
+  const SAME = 1e-9;
+  ranking.forEach((result, i) => {
+    const prev = ranking[i - 1];
+    result.rank = prev && Math.abs(result.score - prev.score) < SAME ? prev.rank : i + 1;
+  });
+  for (const result of ranking) {
+    result.tied = ranking.some(
+      (other) => other !== result && other.rank === result.rank,
+    );
+  }
 
   return {
     ranking,

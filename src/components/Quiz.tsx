@@ -360,10 +360,11 @@ function Results({
       <p className="mt-2 text-sm text-ink/55">{t.privacy}</p>
 
       <ol className="mt-6 space-y-3">
-        {results.ranking.map((result: PartyResult, i) => {
+        {results.ranking.map((result: PartyResult) => {
           const party = partyById.get(result.partyId);
           if (!party) return null;
           const open = expanded === result.partyId;
+          const rankLabel = t.rank[result.rank - 1] ?? `${result.rank}ᵉ`;
 
           return (
             <li key={result.partyId} className="rounded-lg border border-edge bg-surface">
@@ -380,7 +381,8 @@ function Results({
                 />
                 <span className="min-w-0 flex-1">
                   <span className="block text-xs uppercase tracking-widest text-ink/45">
-                    {t.rank[i] ?? `${i + 1}`}
+                    {rankLabel}
+                    {result.tied && <span className="normal-case italic"> {t.tied}</span>}
                   </span>
                   <span className="block truncate font-semibold">{party.name[lang]}</span>
                   <span className="block truncate text-xs text-ink/50">
