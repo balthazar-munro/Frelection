@@ -112,6 +112,49 @@ describe('dataset integrity', () => {
     }
   });
 
+  it('gives each party a visually distinct colour', () => {
+    // Party colour is the only chromatic signal in the UI, so two parties
+    // sharing one makes the reveal view and the results ranking ambiguous.
+    const colors = dataset.parties.map((p) => p.color.toLowerCase());
+    const duplicates = colors.filter((c, i) => colors.indexOf(c) !== i);
+    expect(duplicates, `duplicate party colours: ${duplicates.join(', ')}`).toEqual([]);
+  });
+
+  it('keeps every party colour legible on both light and dark grounds', () => {
+    // The site renders in the viewer's theme. A colour tuned only for paper
+    // disappears on the dark surface, which is how Reconquête's original
+    // near-black grey went invisible in dark mode.
+    const luminance = (hex: string) => {
+      const channel = (v: number) => {
+        const s = v / 255;
+        return s <= 0.03928 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4;
+      };
+      const r = channel(parseInt(hex.slice(1, 3), 16));
+      const g = channel(parseInt(hex.slice(3, 5), 16));
+      const b = channel(parseInt(hex.slice(5, 7), 16));
+      return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+    };
+    const contrast = (a: string, b: string) => {
+      const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x);
+      return (hi + 0.05) / (lo + 0.05);
+    };
+
+    const LIGHT_SURFACE = '#ffffff';
+    const DARK_SURFACE = '#1c1f24';
+    const MIN = 1.6;
+
+    for (const party of dataset.parties) {
+      expect(
+        contrast(party.color, LIGHT_SURFACE),
+        `${party.id} (${party.color}) is too faint on the light surface`,
+      ).toBeGreaterThan(MIN);
+      expect(
+        contrast(party.color, DARK_SURFACE),
+        `${party.id} (${party.color}) is too faint on the dark surface`,
+      ).toBeGreaterThan(MIN);
+    }
+  });
+
   it('has unique ids throughout', () => {
     const partyIds = dataset.parties.map((p) => p.id);
     expect(new Set(partyIds).size).toBe(partyIds.length);

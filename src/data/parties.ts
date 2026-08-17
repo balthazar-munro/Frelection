@@ -90,7 +90,7 @@ export const parties: Party[] = [
     name: { fr: 'Horizons', en: 'Horizons' },
     shortName: 'HOR',
     family: 'centre',
-    color: '#0066CC',
+    color: '#35A2E0',
     candidate: {
       name: 'Édouard Philippe',
       status: 'declared',
@@ -126,7 +126,7 @@ export const parties: Party[] = [
     name: { fr: 'Rassemblement national', en: 'National Rally' },
     shortName: 'RN',
     family: 'droite-nationale',
-    color: '#0D378A',
+    color: '#4472CA',
     candidate: {
       name: 'Marine Le Pen',
       status: 'declared',
@@ -146,7 +146,7 @@ export const parties: Party[] = [
     name: { fr: 'Reconquête', en: 'Reconquest' },
     shortName: 'REC',
     family: 'droite-nationale',
-    color: '#404040',
+    color: '#8A8A8A',
     candidate: {
       name: 'Éric Zemmour',
       status: 'presumed',

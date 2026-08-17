@@ -1,4 +1,5 @@
 ---
+import '../styles/global.css';
 import { dataset } from '../data';
 import { otherLang, ui } from '../lib/i18n';
 import type { Lang } from '../lib/schema';
@@ -24,7 +25,7 @@ const other = otherLang(lang);
   <body class="min-h-screen bg-paper text-ink antialiased">
     {
       dataset.status === 'draft_unverified' && (
-        <div class="border-b border-amber-300 bg-amber-50 px-4 py-2.5 text-center text-xs text-amber-900">
+        <div class="border-b border-notice-edge bg-notice-bg px-4 py-2.5 text-center text-xs text-notice-ink">
           {t.draftBanner}
         </div>
       )

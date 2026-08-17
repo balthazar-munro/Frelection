@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Palette. The neutrals carry a slight warm bias toward paper stock rather
+ * than sitting on pure grey — this is a civic document, not a dashboard.
+ *
+ * Three theme states must be handled, not two: an explicit choice stamps
+ * data-theme on the root, and the default "system" setting stamps nothing,
+ * where only prefers-color-scheme separates light from dark.
+ */
+:root {
+  --color-paper: #fbfaf8;
+  --color-surface: #ffffff;
+  --color-ink: #14161a;
+  --color-edge: #e4e1dc;
+  --color-notice-bg: #fdf6e3;
+  --color-notice-edge: #e6d9a8;
+  --color-notice-ink: #6b5518;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --color-paper: #14161a;
+    --color-surface: #1c1f24;
+    --color-ink: #eceae6;
+    --color-edge: #333840;
+    --color-notice-bg: #2a2415;
+    --color-notice-edge: #4d4222;
+    --color-notice-ink: #e0cf95;
+  }
+}
+
+:root[data-theme='dark'] {
+  --color-paper: #14161a;
+  --color-surface: #1c1f24;
+  --color-ink: #eceae6;
+  --color-edge: #333840;
+  --color-notice-bg: #2a2415;
+  --color-notice-edge: #4d4222;
+  --color-notice-ink: #e0cf95;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

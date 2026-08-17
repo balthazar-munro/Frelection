@@ -43,7 +43,7 @@ function partiesFor(question: Question, optionId: string): Party[] {
 function PartyChip({ party }: { party: Party }) {
   return (
     <span
-      className="inline-flex items-center gap-1.5 rounded-full border border-edge bg-white px-2 py-0.5 text-xs font-medium"
+      className="inline-flex items-center gap-1.5 rounded-full border border-edge bg-surface px-2 py-0.5 text-xs font-medium"
       title={party.name.fr}
     >
       <span
@@ -161,7 +161,7 @@ export default function Quiz({ lang }: Props) {
         <button
           type="button"
           onClick={() => setRevealed((r) => !r)}
-          className="rounded-full border border-edge bg-white px-3 py-1.5 text-xs font-medium hover:border-ink/40"
+          className="rounded-full border border-edge bg-surface px-3 py-1.5 text-xs font-medium hover:border-ink/40"
         >
           {revealed ? t.hide : t.reveal}
         </button>
@@ -195,7 +195,7 @@ export default function Quiz({ lang }: Props) {
               key={option.id}
               type="button"
               onClick={() => choose(option.id)}
-              className="group flex flex-col rounded-lg border border-edge bg-white p-4 text-left transition hover:border-ink/50 hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-ink/30"
+              className="group flex flex-col rounded-lg border border-edge bg-surface p-4 text-left transition hover:border-ink/50 hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-ink/30"
             >
               <span className="font-semibold">{option.label[lang]}</span>
               <span className="mt-2 text-sm leading-relaxed text-ink/65">
@@ -217,7 +217,7 @@ export default function Quiz({ lang }: Props) {
         <button
           type="button"
           onClick={() => choose('none')}
-          className="rounded-lg border border-edge bg-white px-3 py-2 text-sm hover:border-ink/40"
+          className="rounded-lg border border-edge bg-surface px-3 py-2 text-sm hover:border-ink/40"
         >
           {t.none}
         </button>
@@ -239,7 +239,7 @@ export default function Quiz({ lang }: Props) {
         )}
       </div>
 
-      <fieldset className="mt-8 rounded-lg border border-edge bg-white/60 p-4">
+      <fieldset className="mt-8 rounded-lg border border-edge bg-surface/60 p-4">
         <legend className="px-2 text-xs uppercase tracking-widest text-ink/45">
           {t.importanceTitle}
         </legend>
@@ -254,7 +254,7 @@ export default function Quiz({ lang }: Props) {
               className={`rounded-full border px-3 py-1.5 text-sm transition ${
                 topicImportance === level
                   ? 'border-ink bg-ink text-paper'
-                  : 'border-edge bg-white hover:border-ink/40'
+                  : 'border-edge bg-surface hover:border-ink/40'
               }`}
             >
               {level === 'high'
@@ -341,7 +341,7 @@ function Results({
 
   if (results.insufficientData) {
     return (
-      <div className="rounded-lg border border-edge bg-white p-6">
+      <div className="rounded-lg border border-edge bg-surface p-6">
         <p className="text-sm">{t.insufficient}</p>
         <button
           type="button"
@@ -366,7 +366,7 @@ function Results({
           const open = expanded === result.partyId;
 
           return (
-            <li key={result.partyId} className="rounded-lg border border-edge bg-white">
+            <li key={result.partyId} className="rounded-lg border border-edge bg-surface">
               <button
                 type="button"
                 onClick={() => setExpanded(open ? null : result.partyId)}
@@ -462,7 +462,7 @@ function Results({
         <button
           type="button"
           onClick={onShare}
-          className="rounded-lg border border-edge bg-white px-3 py-2 text-sm hover:border-ink/40"
+          className="rounded-lg border border-edge bg-surface px-3 py-2 text-sm hover:border-ink/40"
         >
           {copied ? t.shared : t.share}
         </button>
