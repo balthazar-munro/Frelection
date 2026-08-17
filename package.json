@@ -1,0 +1,31 @@
+{
+  "name": "frelection",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Comparateur de programmes — élection présidentielle française 2027",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "validate": "vitest run src/lib/dataset.test.ts",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@astrojs/react": "^4.2.1",
+    "@astrojs/tailwind": "^6.0.0",
+    "astro": "^5.4.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "tailwindcss": "^3.4.17",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "typescript": "^5.8.2",
+    "vitest": "^3.0.7"
+  }
+}

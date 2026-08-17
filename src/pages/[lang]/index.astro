@@ -1,0 +1,22 @@
+---
+import Quiz from '../../components/Quiz';
+import Base from '../../layouts/Base.astro';
+import { ui } from '../../lib/i18n';
+import { LANGS, type Lang } from '../../lib/schema';
+
+export function getStaticPaths() {
+  return LANGS.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const t = ui[lang];
+---
+
+<Base lang={lang} title={`${t.siteName} — ${t.tagline}`}>
+  <h1 class="text-3xl font-semibold tracking-tight">{t.tagline}</h1>
+  <p class="mt-4 max-w-prose leading-relaxed text-ink/65">{t.intro}</p>
+
+  <div class="mt-10 border-t border-edge pt-10">
+    <Quiz lang={lang} client:load />
+  </div>
+</Base>
